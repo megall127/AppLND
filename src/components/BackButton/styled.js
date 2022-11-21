@@ -6,9 +6,9 @@ const {height , width} = Dimensions.get("window")
 
 
 export const ButtonBody = styled.TouchableOpacity`
-    height: 70px;
-    width: 70px;
-    background-color: #FFCD03;
+    height: 50px;
+    width: 50px;
+    background-color: white;
     border-radius: 5px;
     display: flex;
     justify-content: center;

@@ -12,11 +12,15 @@ const GlobalState = (props) => {
         password:'',
         name: '',
         tell: '',
-        pesinhos: 0,
-        typeuser: ''
+        crm: null,
+        cidade: null,
+        cpf: '',
+        especialit: null,
+        aux: null
     })
     const [alertSucessState, setAlertSucessState] = useState(false)
     const [alertSucessStateHome, setAlertSucessStateHome] = useState(false)
+    const [userInfos, setUsersInfos] = useState({})
 
 
     const datas = {
@@ -27,9 +31,9 @@ const GlobalState = (props) => {
         alertSucessState,
         setAlertSucessState,
         alertSucessStateHome,
-        setAlertSucessStateHome
-
-
+        setAlertSucessStateHome,
+        setUsersInfos,
+        userInfos
     }
 
 

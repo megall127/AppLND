@@ -48,7 +48,7 @@ export const ButtonForgetText = styled.Text`
 export const InputLogin = styled.TextInput`
     width:${width / 1.7};
     height: 50px;
-    border: 1px solid #000000;
+    border: 1px solid #c4c4c4;
     border-radius: 5px;
 `
 export const ButtonForget = styled.TouchableOpacity`
@@ -58,5 +58,16 @@ export const ButtonForget = styled.TouchableOpacity`
 export const TextInputCheck = styled.Text`
     color: red;
 
+
+`
+
+export const Background = styled.View`
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 25%;
+    background-color: #085769;
+    border-bottom-left-radius: 40px;
 
 `

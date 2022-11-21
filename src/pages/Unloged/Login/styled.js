@@ -12,11 +12,10 @@ export const ViewBody = styled.View`
 `
 
 export const ImageBack = styled.Image`
-    height: 50%;
-    width: 100%;
+    height: 70px;
+    width: 290px;
     z-index: 1;
-    position: absolute;
-    top: 0;
+    margin-bottom: 20px;
 `
 export const BoxInfos = styled.View`
     width: 300;
@@ -32,7 +31,7 @@ export const TittleText = styled.Text`
     font-weight: 700;
     font-size: 25px;
     color: black;
-    margin-top: 50px;
+    margin-top: 20px;
 
 `
 export const TittleSubText = styled.Text`
@@ -44,11 +43,12 @@ export const ButtonForgetText = styled.Text`
     text-align: center;
     text-decoration: underline; 
     margin-top: 15px;
+    color: #BA984A;
 `
 export const InputLogin = styled.TextInput`
-    width:${width / 1.7};
+    width: 80%;
     height: 50px;
-    border: 1px solid #000000;
+    border: 1px solid #c4c4c4 ;
     border-radius: 5px;
 `
 export const ButtonForget = styled.TouchableOpacity`

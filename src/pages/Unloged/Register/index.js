@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BoxInfos, ButtonForget, ButtonForgetText, ImageBack, InputLogin, TextInputCheck, TittleSubText, TittleText, ViewBody, ViewBodyScroll } from "./styled";
+import { Background, BoxInfos, ButtonForget, ButtonForgetText, ImageBack, InputLogin, TextInputCheck, TittleSubText, TittleText, ViewBody, ViewBodyScroll } from "./styled";
 import DropShadow from "react-native-drop-shadow";
 import fundo from "../../../assets/imgs/fundo2.png"
 import { useNavigation } from "@react-navigation/native";
@@ -16,15 +16,17 @@ const RegisterIndex = () => {
 
     const [email, setEmail] = useState('')
     const [nome , setNome] = useState('')
+    const [tell , setTell] = useState('')
     
 
     //showAlert
     const [alertName, setAlertName] = useState("0")
     const [alertEmail, setAlertEmail] = useState("0")
+    const [alertTell, setAlerTell] = useState("0")
 
     useEffect(() => {
-      setRegisterInfos(prevState => ({...prevState, email:email, name: nome}))
-    },[email, nome])
+      setRegisterInfos(prevState => ({...prevState, email:email, name: nome, tell: tell}))
+    },[email, nome, tell])
 
     const checkEmpty = (value) => {
       if(value === ""){
@@ -71,10 +73,11 @@ const RegisterIndex = () => {
 
     return(
             <ViewBody>
+              <Background/>
             <DropShadow
                   style={{
                     width: "100%",
-                    zIndex: 1,
+                    zIndex: 2,
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
@@ -90,13 +93,14 @@ const RegisterIndex = () => {
             <BoxInfos>
                 <TittleText>Crie a sua conta</TittleText>
                 <TittleSubText>Preencha os campos abaixo para a sua conta ser validada.</TittleSubText>
-                <TittleSubText>1 de 3</TittleSubText>
-                <InputLogin onChangeText={setNome} value={nome} placeholder="Nome" style={{marginTop: 70, borderColor:checkInput(alertName)}}></InputLogin>
+                <TittleSubText>1 de 2</TittleSubText>
+                <InputLogin onChangeText={setNome}  value={nome} placeholder="Nome" style={{marginTop: 70, borderColor:checkInput(alertName)}}></InputLogin>
                 {checkInputText(alertName)}
                 <InputLogin onChangeText={setEmail} value={email} placeholder="E-mail" style={{marginTop: 35, borderColor: checkInput(alertEmail)}}></InputLogin>
                 {checkInputText(alertEmail)}
-                <PrimaryButton marginTops={30} label="Continuar" onPress={()=> buttonContinue()}/>
-                <PrimaryButton marginTops={10} label="Ja tenho conta" onPress={()=> navigation.navigate("LOGINN")}/>
+                <InputLogin onChangeText={setTell} value={tell} keyboardType="numeric" placeholder="Telefone" style={{marginTop: 35, borderColor: checkInput(alertTell)}}></InputLogin>
+                <PrimaryButton marginTops={30} radius={10} label="Continuar" onPress={()=> buttonContinue()}/>
+                <PrimaryButton marginTops={10} radius={10}  label="Ja tenho conta" onPress={()=> navigation.navigate("LOGINN")}/>
             </BoxInfos>
             </DropShadow>
         </ViewBody>

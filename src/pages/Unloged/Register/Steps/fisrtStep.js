@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BoxInfos, ImageBack, InputLogin, TextInputCheck, TittleText, ViewBody} from "../styled";
+import { Background, BoxInfos, ImageBack, InputLogin, TextInputCheck, TittleText, ViewBody} from "../styled";
 import DropShadow from "react-native-drop-shadow";
 import { useNavigation } from "@react-navigation/native";
 import PrimaryButton from "../../../../components/ButtonPrimary";
@@ -7,18 +7,21 @@ import BackButton from "../../../../components/BackButton";
 import GlobalStateContext from "../../../../GlobalState/GlobalStateContext";
 import { TittleSubText } from "./styled";
 import AlertWrong from "../../../../components/AlertWrong";
+import api from "../../../../Service/api";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const FirstStepRegister = () => {
 
     const { setRegisterInfos, registerInfos } = useContext(GlobalStateContext);
 
-    const [telefone , setTelefone] = useState("")
+    const [cpf , setCpf] = useState("")
     const [senha , setSenha] = useState("")
     const [confirmarSenha , setconfirmarSenha] = useState("")
+    const [loading, setLoading] = useState(false)
 
 
     //showAlert
-    const [alertTelefone, setAlertTelefone] = useState("0")
+    const [alertCpf, setAlertCpf] = useState("0")
     const [alertSenha, setAlertSenha] = useState("0")
     const [alertConfrSenha, setAlertConfrSenha] = useState("0")
     const [failAlert, setFailAlert] = useState(false)
@@ -26,8 +29,8 @@ const FirstStepRegister = () => {
     const navigation = useNavigation();
 
     useEffect(() => {
-      setRegisterInfos(prevState => ({...prevState, tell: telefone, password: senha}))
-    },[telefone,senha])
+      setRegisterInfos(prevState => ({...prevState, cpf: cpf, password: senha}))
+    },[cpf,senha])
 
     const checkEmpty = (value) => {
       if(value === ""){
@@ -36,9 +39,46 @@ const FirstStepRegister = () => {
           return false
       }
     }
+
+    const showLoading = () => {
+      if(loading === true){
+        return(
+          <Spinner
+          visible={true}
+        />
+        )
+      } else {
+        return(
+          <></>
+        )
+      }
+  }
+
+    const registerHandle = () => {
+      setLoading(true)
+      api.post('/register', registerInfos)
+      .then((res) => {
+          setLoading(false)
+          console.log("ou aqui")
+          navigation.navigate("SECONDTSTEP")
+          setAlertSucessState(true)
+          setTimeout(() => {
+            setAlertSucessState(false)
+          }, 3000)
+      })
+      .catch((err) => {
+        console.log(registerInfos)
+        setLoading(false)
+        setFailAlert(true)
+        setTimeout(() => {
+          setFailAlert(false)
+        }, 3000)
+      })
+  }
     
     const buttonContinue = () => {
         checkSenha()
+        
     }
 
     const checkInput = (value) => {
@@ -56,16 +96,16 @@ const FirstStepRegister = () => {
           setFailAlert(false)
         }, 3000)
       } else {
-        if(checkEmpty(telefone) && checkEmpty(senha) && checkEmpty(confirmarSenha)){
-          setAlertTelefone("1")
+        if(checkEmpty(cpf) && checkEmpty(senha) && checkEmpty(confirmarSenha)){
+          setAlertCpf("1")
           setAlertSenha("1")
           setAlertConfrSenha("1")
-        } else if(checkEmpty(telefone) && checkEmpty(confirmarSenha)) {
-          setAlertTelefone("1")
+        } else if(checkEmpty(cpf) && checkEmpty(confirmarSenha)) {
+          setAlertCpf("1")
           setAlertConfrSenha("1")
-        } else if(checkEmpty(senha) && checkEmpty(telefone)){
+        } else if(checkEmpty(senha) && checkEmpty(cpf)){
           setAlertSenha("1")
-          setAlertTelefone("1")
+          setAlertCpf("1")
         } else if(checkEmpty(confirmarSenha) && checkEmpty(senha)){
           setAlertSenha("1")
           setAlertConfrSenha("1")
@@ -73,10 +113,10 @@ const FirstStepRegister = () => {
           setAlertConfrSenha("1")
         } else if(checkEmpty(senha)){
           setAlertSenha("1")
-        } else if(checkEmpty(telefone)){
-          setAlertTelefone("1")
+        } else if(checkEmpty(cpf)){
+          setAlertCpf("1")
         } else {
-          navigation.navigate("SECONDTSTEP")
+          registerHandle()
         }
       }
     }
@@ -108,12 +148,14 @@ const FirstStepRegister = () => {
 
     return(
             <ViewBody>
+              <Background/>
+              {showLoading()}
               {checkAlert()}
             <BackButton onPress={() => navigation.navigate("REGISTER")}></BackButton>
             <DropShadow
                   style={{
                     width: "100%",
-                    zIndex: 1,
+                    zIndex: 2,
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
@@ -128,14 +170,14 @@ const FirstStepRegister = () => {
             >
             <BoxInfos>
                 <TittleText style={{width: 200}}>Estamos quase acabando</TittleText>
-                <TittleSubText>2 de 3</TittleSubText>
-                <InputLogin  keyboardType="numeric" onChangeText={setTelefone} value={telefone} placeholder="Telefone" style={{marginTop: 50, borderColor:checkInput(alertTelefone)}}></InputLogin>
-                {checkInputText(alertTelefone)}
+                <TittleSubText>2 de 2</TittleSubText>
+                <InputLogin  keyboardType="numeric" onChangeText={setCpf} value={cpf} placeholder="CPF" style={{marginTop: 50, borderColor:checkInput(alertCpf)}}></InputLogin>
+                {checkInputText(alertCpf)}
                 <InputLogin secureTextEntry={true} onChangeText={setSenha} value={senha} placeholder="Senha" style={{marginTop: 35,borderColor:checkInput(alertSenha)}}></InputLogin>
                 {checkInputText(alertSenha)}
                 <InputLogin secureTextEntry={true} onChangeText={setconfirmarSenha} value={confirmarSenha} placeholder="Confirmar senha" style={{marginTop: 35,borderColor:checkInput(alertConfrSenha)}}></InputLogin>
                 {checkInputText(alertConfrSenha)}
-                <PrimaryButton marginTops={30} label="Continuar" onPress={() => buttonContinue()}/>
+                <PrimaryButton marginTops={30} label="Finalizar Cadastro" onPress={() => buttonContinue()}/>
             </BoxInfos>
 
             </DropShadow>

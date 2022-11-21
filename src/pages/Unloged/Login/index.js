@@ -10,6 +10,7 @@ import GlobalStateContext from "../../../GlobalState/GlobalStateContext";
 import api from "../../../Service/api";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { View } from "react-native";
 
 const LoginPage = () => {
 
@@ -19,7 +20,8 @@ const LoginPage = () => {
     alertSucessState,
     setAlertSucessState,
     alertSucessStateHome,
-    setAlertSucessStateHome 
+    setAlertSucessStateHome,
+    setUsersInfos,userInfos
   } = useContext(GlobalStateContext);
 
   const[email, setEmail] = useState('')
@@ -44,7 +46,8 @@ const LoginPage = () => {
     } )
     .then((res) => {
       setLoading(false)
-      storeData(res.data.token)
+      storeData(res.data.token.token)
+      setUsersInfos(res.data.user)
       navigation.navigate("HOMEPAGE")
       setAlertSucessStateHome(true)
       setTimeout(() => {
@@ -123,16 +126,16 @@ const LoginPage = () => {
             <BoxInfos>
                 <TittleText>Acesse a sua conta</TittleText>
                 <TittleSubText>Digite o seu e-mail e senha para acessar a sua conta no app.</TittleSubText>
-                <InputLogin onChangeText={setEmail} value={email} placeholder="E-mail" style={{marginTop: 70}}></InputLogin>
+                <InputLogin onChangeText={setEmail} value={email} placeholder="E-mail" style={{marginTop: 40}}></InputLogin>
                 <InputLogin secureTextEntry={true} onChangeText={setPassword} value={password} placeholder="Senha" style={{marginTop: 15}}></InputLogin>
+                <PrimaryButton onPress={() => loginHandle()} marginTops={10}  radius={10} label="Confirmar"/>
                 <ButtonForget >
                 <ButtonForgetText>Esqueci minha senha</ButtonForgetText>
                 </ButtonForget>
-                <PrimaryButton onPress={() => loginHandle()} marginTops={30} label="Confirmar"/>
-                <PrimaryButton marginTops={10} label="Ainda não é usuário?"  onPress={()=> navigation.navigate("REGISTER")} />
+                <PrimaryButton marginTops={10} radius={10} label="Ainda não é usuário?"  onPress={()=> navigation.navigate("REGISTER")} />
             </BoxInfos>
-
             </DropShadow>
+            <PrimaryButton marginTops={30}  radius={15} label="Falar com suporte"  onPress={()=> navigation.navigate("REGISTER")} />
         </ViewBody>
     )
 }

@@ -55,3 +55,19 @@ export const ButtonForget = styled.TouchableOpacity`
 
 `
 
+export const TittleFinaly = styled.Text`
+    font-size: 40px;
+    color: #519934;
+
+`
+export const SubTittleFinaly = styled.Text`
+    font-size: 20px;
+    width: 200px;
+    text-align: center;
+    color: black;
+`
+
+export const RegisterFinally = styled.View`
+    align-items: center;
+    margin-top: 45%;
+`

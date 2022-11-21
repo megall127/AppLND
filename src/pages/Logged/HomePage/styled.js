@@ -9,11 +9,14 @@ export const ViewBody = styled.View`
     flex: 1;
 `
 
-export const ImageBack = styled.ImageBackground`
+export const ImageBack = styled.View`
+    z-index: 0;
+    position: absolute;
+    top: 0;
     width: 100%;
-    padding-bottom: 10px;
-    justify-content: space-around;
-    align-items: center;
+    height: 230px;
+    background-color: #085769;
+    border-bottom-left-radius: 40px;
 `
 export const ImageIcon = styled.Image`
 
@@ -22,6 +25,11 @@ export const ImageSelfie = styled.Image`
     width: 90%;
     height: 90%;
     border-radius: 80px;
+`
+export const ImageFlyer = styled.Image`
+    width: 90%;
+    height: 90%;
+    border-radius: 30px;
 `
 export const BoxInfos = styled.View`
     margin-top: 20px;
@@ -32,6 +40,7 @@ export const BoxInfos = styled.View`
     z-index: 0;
     border-radius: 30px;
     align-items: center;
+    justify-content: center;
     margin-bottom: 20px;
 `
 
@@ -44,7 +53,7 @@ export const ButtonMenu = styled.TouchableOpacity`
     align-self: flex-start;
     border-radius: 50px;
     margin-left: 20px;
-    margin-top: 20px;
+    margin-top: 30px;
 `
 export const ButtonExit = styled.TouchableOpacity`
     justify-content: center;
@@ -54,7 +63,6 @@ export const ButtonExit = styled.TouchableOpacity`
     align-self: flex-start;
     border-radius: 50px;
     margin-left: 20px;
-    margin-top: 20px;
 `
 export const MenuButtom = styled.TouchableOpacity`
     align-items: center;
@@ -67,7 +75,6 @@ export const MenuButtom = styled.TouchableOpacity`
 `
 export const ViewHeader = styled.View`
  width: 100%;
- margin-bottom: 90px;
 `
 export const ContainerInfosUser = styled.View`
     flex-direction: row;
@@ -78,8 +85,8 @@ export const ButtonsContainer = styled.View`
 
 `
 export const UserName = styled.Text`
-    font-size: 35px;
-    color: black;
+    font-size: 30px;
+    color: white;
     margin-left: 30px;
     font-weight: 600;
 `
@@ -100,10 +107,22 @@ export const PhotoSelfie = styled.View`
 
 `
 export const PesinhosInfos = styled.Text`
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 600;
     color: black;
 `
+
+export const SubInfos = styled.Text`
+    font-size: 10px;
+    font-weight: 600;
+    color: #c4c4c4;
+`
+export const SubInfosSaldo = styled.Text`
+    font-size: 15px;
+    font-weight: 600;
+    color: #c4c4c4;
+`
+
 export const ImagePezinho = styled.Image`
     height: 20px;
     width: 10px;
@@ -117,5 +136,31 @@ export const IconButtomMenu = styled.Image`
     margin-left: 10px;
 `
 export const TextButtonMenu = styled.Text`
+    color: #8A9696;
+`
+
+export const ButtonMoreInfo = styled.TouchableOpacity`
+    margin-left: 35px;
+    margin-top: 20px;
+
+`
+export const ButtonMoreInfoText = styled.Text`
+    text-decoration: underline; 
+    color: #BA984A;
+    font-size: 16px;
+`
+
+export const ButtonHome = styled.TouchableOpacity`
+    height: 150px;
+    width: 150px;
+    background-color: #085769;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+
+`
+export const ButtonHomeText = styled.Text`
+    color: white;
+    font-size: 17px;
 
 `

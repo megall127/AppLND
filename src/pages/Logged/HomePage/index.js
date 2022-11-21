@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BoxInfos, ButtonExit, ButtonMenu, ButtonsContainer, ContainerInfosUser, IconButtomMenu, ImageBack, ImageIcon, ImagePezinho, ImageSelfie, MenuButtom, PesinhosInfos, PhotoSelfie, SubText, TextButtonMenu, UserName, ViewBody, ViewHeader, ViewModal } from "./styled";
+import { BoxInfos, ButtonExit, ButtonHome, ButtonHomeText, ButtonMenu, ButtonMoreInfo, ButtonMoreInfoText, ButtonsContainer, ContainerInfosUser, IconButtomMenu, ImageBack, ImageFlyer, ImageIcon, ImagePezinho, ImageSelfie, MenuButtom, PesinhosInfos, PhotoSelfie, SubInfos, SubInfosSaldo, SubText, TextButtonMenu, UserName, ViewBody, ViewHeader, ViewModal } from "./styled";
 import DropShadow from "react-native-drop-shadow";
 import fundo from "../../../assets/imgs/FundoHome.png"
 import fundoMenu from "../../../assets/imgs/fundo.png"
@@ -25,10 +25,10 @@ const HomePage = () => {
 
   const navigation = useNavigation();
 
-  const [openMenu, setOpenMenu] = useState(false)
-  const [userInfos, setUsersInfos] = useState({})
+  const [openMenu, setOpenMenu] = useState(false);
+  const [docSelect, setDocSelect] = useState({proc:[]})
   const { alertSucessState,
-    setAlertSucessState,alertSucessStateHome } = useContext(GlobalStateContext);
+    setAlertSucessState,alertSucessStateHome,setUsersInfos,userInfos } = useContext(GlobalStateContext);
 
   
   const showAlert = () => {
@@ -42,63 +42,128 @@ const HomePage = () => {
       )
     }
 }
-
-    useEffect(() => {
-       api.get("/takedados",)
-       .then((res) => {
-        setUsersInfos(res.data)
-       })
-       .catch((err) => {
+  const handleInfosDoc = () => {
+    api.post('/takedoctors', {id: userInfos.id})
+    .then((res) => {
+        setDocSelect(res.data.data)
+    })
+    .catch((err) => {
         console.log(err)
-       })
-    },[])
+    })
+  }
+
+  useEffect(() => {
+    handleInfosDoc()
+  },[])
+
+  const formatCurrency = (value) => {
+    return value.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+}
+
+  const left15DaysTotal = () => {
+    const today = new Date()
+    const day = 86400000
+    const daysAgo = new Date(today - (15*day))
+    const leftDaysAgo = docSelect.proc.filter(element => element.date_proc <= today.toISOString().slice(0, 10) && element.date_proc >= daysAgo.toISOString().slice(0,10) )
+
+
+    let total = 0;
+    for(let value of leftDaysAgo) {
+        total += value.valor_proc;
+    }
+    return formatCurrency(total);
+}
+
+
+const next15DaysTotal = () => {
+  const today = new Date()
+  const DaysInTheFuture = new Date(new Date().setDate(new Date().getDate() + 15));
+  const leftDaysAgo = docSelect.proc.filter(element => element.date_proc >= today.toISOString().slice(0, 10) && element.date_proc <= DaysInTheFuture.toISOString().slice(0,10) )
+
+
+
+  let total = 0;
+  for(let value of leftDaysAgo) {
+      total += value.valor_proc;
+  }
+  return formatCurrency(total);
+}
+
+const next30DaysTotal = () => {
+  const today = new Date()
+  const DaysInTheFuture = new Date(new Date().setDate(new Date().getDate() + 30));
+  const leftDaysAgo = docSelect.proc.filter(element => element.date_proc >= today.toISOString().slice(0, 10) && element.date_proc <= DaysInTheFuture.toISOString().slice(0,10) )
+
+  let total = 0;
+  for(let value of leftDaysAgo) {
+      total += value.valor_proc;
+  }
+  return formatCurrency(total);
+}
+
+
 
 
     return(   
             <SafeAreaView style={{flex: 1}}>
             <ScrollView style={{backgroundColor: 'white'}}>
                 {showAlert()}
-            <ImageBack source={fundo}>
                 <ViewHeader>
+                  <ImageBack>
+                  </ImageBack>
                     <ButtonMenu onPress={()=> setOpenMenu(true)}>
                         <ImageIcon source={iconMenu}/>
                     </ButtonMenu>
                     <ContainerInfosUser>
                         <View>
                         <UserName style={{marginTop: 30}}>Olá,</UserName>
-                        <UserName>{userInfos.name}</UserName>
+                        <UserName>Dr. {userInfos.name}</UserName>
                         </View>
                         <PhotoSelfie>
-                            <ImageSelfie source={victinho}></ImageSelfie>
+                            <ImageSelfie source={perfil}></ImageSelfie>
                         </PhotoSelfie>
                     </ContainerInfosUser>
-                    <PesinhosInfos style={{paddingTop: 40, marginLeft: 30}}>Saldo de Pezinhos</PesinhosInfos>
+                    <PesinhosInfos style={{paddingTop: 40, marginLeft: 30}}>Saldo disponível</PesinhosInfos>
                     <View style={{flexDirection: "row",  marginLeft: 30}}>
-                    <ImagePezinho source={pezinho}></ImagePezinho>
-                    <PesinhosInfos style={{ marginLeft: 5}}>{userInfos.pesinhos}</PesinhosInfos>
+                    <PesinhosInfos>R${next30DaysTotal()}</PesinhosInfos>
                     </View>
                 </ViewHeader>
-                </ImageBack>
-            
-            <DropShadow
-                  style={{
-                    width: "100%",
-                    zIndex: 1,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 0.5,
-                    shadowRadius: 3,
-                  }}
-            >
-            <BoxInfos>
-            </BoxInfos>
-            </DropShadow>
+                  <View style={{flexDirection: "row", justifyContent: "space-evenly"  , marginTop: 20}}>
+                  <View style={{flexDirection: "column"}}>
+                  <SubInfos>últimos 15 dias</SubInfos>
+                  <SubInfosSaldo>R${left15DaysTotal()}</SubInfosSaldo>
+                  </View>
+                  <View style={{flexDirection: "column"}}>
+                  <SubInfos>próximos 15 dias</SubInfos>
+                  <SubInfosSaldo>R${next15DaysTotal()}</SubInfosSaldo>
+                  </View>
+                  <View style={{flexDirection: "column"}}>
+                  <SubInfos>próximos 30 dias</SubInfos>
+                  <SubInfosSaldo>R${next30DaysTotal()}</SubInfosSaldo>
+                  </View>
+                  </View>
+                  <ButtonMoreInfo>
+                    <ButtonMoreInfoText>Mais informaçõess</ButtonMoreInfoText>
+                  </ButtonMoreInfo>
+                <View style={{justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row', marginTop: 40}}>
+                  <ButtonHome>
+                      <ButtonHomeText>Gráficos</ButtonHomeText>
+                  </ButtonHome>
+                  <ButtonHome>
+                    <ButtonHomeText>Produção</ButtonHomeText>
+                  </ButtonHome>
+
+                </View>
+                <View style={{justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row', marginTop: 20}}>
+                  <ButtonHome>
+                  <ButtonHomeText>Conciliação</ButtonHomeText>
+                  </ButtonHome>
+                  <ButtonHome>
+                  <ButtonHomeText>Ticket médio</ButtonHomeText>
+                  </ButtonHome>
+
+                </View>
+
         </ScrollView>
         <Modal
         animationType="slide"
@@ -138,13 +203,13 @@ const HomePage = () => {
                     shadowRadius: 1,
                   }}
             >
-        <MenuButtom>
+        <MenuButtom onPress={() => navigation.navigate("PROFILE")}>
             <View style={{width: 50}}>
             <IconButtomMenu style={{height: 30, width: 30}} source={perfil}></IconButtomMenu>
             </View>
             <TextButtonMenu>Perfil</TextButtonMenu>
         </MenuButtom>
-        <MenuButtom>
+        <MenuButtom onPress={() => navigation.navigate("CALLFIRST")}>
             <View style={{width: 50}}>
             <IconButtomMenu style={{height: 30, width: 30}} source={chamada}></IconButtomMenu>
             </View>

@@ -6,6 +6,9 @@ import RegisterIndex from "../pages/Unloged/Register";
 import FirstStepRegister from "../pages/Unloged/Register/Steps/fisrtStep";
 import SecondStep from "../pages/Unloged/Register/Steps/secondStep";
 import HomePage from "../pages/Logged/HomePage";
+import Profile from "../pages/Logged/Profile";
+import CallFirst from "../pages/Logged/Call";
+import CallSec from "../pages/Logged/Call/Steps/monitorSelect";
 
 const Router = () => {
 
@@ -22,6 +25,9 @@ const Router = () => {
             <Stack.Screen name="FIRSTSTEP" component={FirstStepRegister} />
             <Stack.Screen name="SECONDTSTEP" component={SecondStep} />
             <Stack.Screen name="HOMEPAGE" component={HomePage} />
+            <Stack.Screen name="PROFILE" component={Profile} />
+            <Stack.Screen name="CALLFIRST" component={CallFirst} />
+            <Stack.Screen name="CALLSEC" component={CallSec} />
             </Stack.Navigator>
         </NavigationContainer>
     )

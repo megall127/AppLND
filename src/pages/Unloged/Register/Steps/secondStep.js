@@ -3,12 +3,15 @@ import DropShadow from "react-native-drop-shadow";
 import { useNavigation } from "@react-navigation/native";
 import PrimaryButton from "../../../../components/ButtonPrimary";
 import BackButton from "../../../../components/BackButton";
-import { BoxInfos, TittleSubText, TittleText, ViewBody } from "./styled";
+import { BoxInfos, RegisterFinally, SubTittleFinaly, TittleFinaly, TittleSubText, TittleText, ViewBody } from "./styled";
 import { Picker } from "@react-native-picker/picker";
 import GlobalStateContext from "../../../../GlobalState/GlobalStateContext";
 import Spinner from 'react-native-loading-spinner-overlay';
 import api from "../../../../Service/api";
 import AlertWrong from "../../../../components/AlertWrong";
+import { Background } from "../styled";
+import { Image, View } from "react-native";
+import register from '../../../../assets/imgs/register.png'
 
 const SecondStep = () => {
     const navigation = useNavigation();
@@ -80,61 +83,17 @@ const SecondStep = () => {
 
     return(
             <ViewBody>
+              <Background/>
               {checkAlert()}
               {showLoading()}
-            <BackButton onPress={() => navigation.navigate("FIRSTSTEP")}></BackButton>
-            <DropShadow
-                  style={{
-                    width: "100%",
-                    zIndex: 1,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 0.5,
-                    shadowRadius: 3,
-                  }}
-            >
-            <BoxInfos style={{height:500}}>
-                <TittleText style={{width: 200}}>Quem é você?</TittleText>
-                <TittleSubText>Selecione a opção que você se encaixa.</TittleSubText>
-                <TittleSubText>3 de 3</TittleSubText>
-                <DropShadow
-                  style={{
-                    width: "100%",
-                    zIndex: 1,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    shadowColor: "#000",
-                    marginTop: 50,
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 0.2,
-                    shadowRadius: 3,
-                  }}
-            >
-                <Picker style={{width: 200, backgroundColor: "white"}}
-                    selectedValue={selectedType}
-                    onValueChange={(itemValue, itemIndex) =>
-                      setSelectedType(itemValue)
-                    }>
-                    <Picker.Item label="Aluno" value="aluno" />
-                    <Picker.Item label="Professor" value="professor" />
-                    <Picker.Item label="Monitor" value="monitor" />
-                  </Picker>
-                  </DropShadow>
-
-                <PrimaryButton onPress={()=> registerHandle()} marginTops="40%" label="Finalizar Cadastro"/>
-            </BoxInfos>
-
-            </DropShadow>
+              <View style={{position:"absolute", top: 20, left: 0}}>
+              </View>
+              <RegisterFinally>
+                  <TittleFinaly>Parabéns!</TittleFinaly>
+                  <SubTittleFinaly>A sua conta foi criada com sucesso</SubTittleFinaly>
+                  <Image style={{height: 350, width: 300}} source={register}></Image>
+                  <PrimaryButton widthValue={200} radius={10} onPress={() =>  navigation.navigate("LOGINN")} label='Começar a usar o aplicativo'></PrimaryButton>
+              </RegisterFinally>
         </ViewBody>
     )
 }
